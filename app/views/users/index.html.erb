@@ -1,0 +1,5 @@
+<%= @users.each do |usr| %>
+  <%= usr.name %>
+  <%= usr.email %>
+  <%= link_to "リンク", user_path(usr.id) %>
+<% end %>

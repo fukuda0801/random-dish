@@ -50,6 +50,4 @@ test:
 #
 production:
   <<: *default
-  database: random_dish_production
-  username: random_dish
-  password: <%= ENV['RANDOM_DISH_DATABASE_PASSWORD'] %>
+  url: <%= ENV['CLEARDB_DATABASE_URL'] %>
