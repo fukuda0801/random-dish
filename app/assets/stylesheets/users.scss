@@ -1,6 +1,10 @@
 /*アカウント登録画面、ログイン画面*/
+.user_form_page {
+  margin: 0;
+}
+
 .user_form {
-  margin: 5rem 15rem 10rem;
+  margin: 5rem 10rem 10rem;
   padding: 3rem;
   border: 2px solid #ffc7af;
   border-radius: 10px;
@@ -27,4 +31,39 @@
   border-radius: 10px;
   border: 2px solid #ffc7af;
   box-shadow: none;
+}
+
+/*アカウント情報ページ*/
+.user_info_title {
+  margin-bottom: 3rem;
+  font-size: 1.5rem;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.user_info_text {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.user_info_row {
+  border-bottom: 1px solid #666
+}
+
+.user_info_links {
+  margin-top: 2rem;
+}
+
+.user_info_link {
+  color: #666;
+}
+
+.user_info_link:visited {
+  color: #666;
+}
+
+/*アカウント情報編集ページ*/
+.user_edit_back_btn {
+  font-size: 1rem;
+  color: #666;
 }

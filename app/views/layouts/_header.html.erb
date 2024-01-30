@@ -17,8 +17,10 @@
             <%= current_user.name %>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <%= link_to "アカウント情報", root_path, class: "dropdown-item dropdown_item_link" %>
+            <%= link_to "アカウント情報", user_path(current_user.id), class: "dropdown-item dropdown_item_link" %>
+            <%= link_to "設定", user_path(current_user.id), class: "dropdown-item dropdown_item_link" %>
             <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "dropdown-item dropdown_item_link" %>
+            <%= link_to "退会する", user_path(current_user.id), method: :delete, class: "dropdown-item dropdown_item_link", data: { confirm: "本当に削除しますか？" } %>
           </ul>
         </div>
       <% else %>
