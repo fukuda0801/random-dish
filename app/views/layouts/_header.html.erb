@@ -20,13 +20,17 @@
             <%= link_to "アカウント情報", user_path(current_user.id), class: "dropdown-item dropdown_item_link" %>
             <%= link_to "設定", user_path(current_user.id), class: "dropdown-item dropdown_item_link" %>
             <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "dropdown-item dropdown_item_link" %>
-            <%= link_to "退会する", user_path(current_user.id), method: :delete, class: "dropdown-item dropdown_item_link", data: { confirm: "本当に削除しますか？" } %>
+            <% if current_user.name == "ゲストユーザー" %>
+              <a href="" class="dropdown-item dropdown_item_link dropdown_item_disabled" tabindex="-1" aria-disabled="true">退会する</a>
+            <% else %>
+              <%= link_to "退会する", user_path(current_user.id), method: :delete, class: "dropdown-item dropdown_item_link", data: { confirm: "本当に削除しますか？" } %>
+            <% end %>
           </ul>
         </div>
       <% else %>
         <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary px-3 login_btn" %>
         <%= link_to "ログイン", new_user_session_path, class: "btn btn-primary px-3 login_btn" %>
-        <%= link_to "ゲストログイン", root_path, class: "btn btn-primary px-3 login_btn" %>
+        <%= link_to "ゲストログイン", users_guest_sign_in_path, method: :post, class: "btn btn-primary px-3 login_btn" %>
       <% end %>
     </div>
   </nav>

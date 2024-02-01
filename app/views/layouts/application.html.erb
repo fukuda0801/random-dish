@@ -13,6 +13,15 @@
 
   <body>
     <%= render 'layouts/header' %>
+
+    <% if notice.present? %>
+      <p class="notice_message"><%= notice %></p>
+    <% end %>
+
+    <% if alert.present? %>
+      <p class="alert_message"><%= alert %></p>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

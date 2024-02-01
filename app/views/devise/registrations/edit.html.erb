@@ -3,6 +3,7 @@
     <p class="user_form_title">アカウント情報編集</p>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
       <div class="row mb-3">
         <%= f.label :name, "アカウント名", class: "col-sm-2 col-form-label" %>
         <div class="col-sm-10">
