@@ -29,6 +29,10 @@ ja:
         updated_at: 更新日
     models:
       user: ユーザー
+      admin_user: 管理者
+  time:
+    formats:
+      long: "%Y年%m月%d日 %H:%M"
   devise:
     confirmations:
       confirmed: メールアドレスが確認できました。
