@@ -28,3 +28,10 @@ services:
       - db
     stdin_open: true
     tty: true
+  selenium:
+    image: selenium/standalone-chrome
+    shm_size: 2gb
+    ports:
+      - "4444:4444"
+    volumes:
+      - /dev/shm:/dev/shm

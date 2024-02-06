@@ -36,13 +36,13 @@
         <%= f.label :sex, "性別", class: "col-sm-2 col-form-label" %>
         <div class="col-sm-10">
           <%= f.radio_button :sex, '男性', class: "form-check-input" %>
-          <%= f.label :sex_male, '男性', class: "form-check-label" %>
+          <%= f.label :sex, '男性', value: '男性', class: "form-check-label" %>
 
           <%= f.radio_button :sex, '女性', class: "form-check-input" %>
-          <%= f.label :sex_female, '女性', class: "form-check-label" %>
+          <%= f.label :sex, '女性', value: '女性', class: "form-check-label" %>
 
           <%= f.radio_button :sex, 'その他', class: "form-check-input" %>
-          <%= f.label :sex_other, 'その他', class: "form-check-label" %>
+          <%= f.label :sex, 'その他', value: 'その他', class: "form-check-label" %>
         </div>
       </div>
 

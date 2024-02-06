@@ -5,8 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
 
   validates :name, presence: true, length: { maximum: 20 }
-  validates :email, uniqueness: true
-  validates :password, format: { with: /\A[a-zA-Z0-9]+\z/, message: 'は半角英数字で入力してください' }
+  validates :password, format: { with: /\A[a-zA-Z0-9]+\z/, message: 'は半角英数字で入力してください。' }
   validates :sex, presence: true
 
   # 管理者画面検索許可
@@ -17,7 +16,7 @@ class User < ApplicationRecord
   # ゲストユーザー作成メソッド
   def self.guest
     find_or_create_by!(email: 'guest1@example.com') do |user|
-      user.password = SecureRandom.urlsafe_base64
+      user.password = SecureRandom.alphanumeric(8)
       user.name = "ゲストユーザー"
       user.sex = "未設定(ゲスト用)"
       user.confirmed_at = Time.zone.now

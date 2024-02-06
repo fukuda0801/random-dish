@@ -102,8 +102,14 @@ GEM
       warden (~> 1.2.3)
     devise-i18n (1.12.0)
       devise (>= 4.9.0)
+    diff-lcs (1.5.1)
     dotenv (2.8.1)
     erubi (1.12.0)
+    factory_bot (6.4.6)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
+      railties (>= 5.0.0)
     ffi (1.16.3)
     formtastic (5.0.0)
       actionpack (>= 6.0.0)
@@ -229,6 +235,23 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.2.6)
+    rspec-core (3.12.2)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.6)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-rails (6.1.1)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      railties (>= 6.1)
+      rspec-core (~> 3.12)
+      rspec-expectations (~> 3.12)
+      rspec-mocks (~> 3.12)
+      rspec-support (~> 3.12)
+    rspec-support (3.12.1)
     rubocop (1.60.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -321,12 +344,14 @@ DEPENDENCIES
   devise
   devise-i18n
   dotenv
+  factory_bot_rails
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mysql2 (~> 0.5)
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.7, >= 6.1.7.6)
+  rspec-rails
   rubocop
   rubocop-performance
   rubocop-rails
