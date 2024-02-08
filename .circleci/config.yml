@@ -1,0 +1,65 @@
+version: 2.1
+
+orbs:
+  heroku: circleci/heroku@2.0
+
+jobs:
+  build_and_test:
+    docker:
+      - image: cimg/ruby:3.0.2
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Install dependencies
+          command: |
+            curl -sL https://deb.nodesource.com/setup_14.x | bash -
+            apt-get update && apt-get install -y nodejs yarn docker-compose
+      - run:
+          name: Setup Docker environment
+          command: |
+            docker-compose -f docker-compose.yml up -d
+      - run:
+          name: Check containers
+          command: |
+            docker-compose ps
+      - run:
+          name: Setup database
+          command: |
+            docker-compose exec web bash -c "rake db:create db:migrate"
+      - run:
+          name: Run RuboCop
+          command: |
+            docker-compose exec web bash -c "bundle exec rubocop"
+      - run:
+          name: Run RSpec tests
+          command: |
+            docker-compose exec web bash -c "bundle exec rspec"
+      - run:
+          name: Clean up
+          command: |
+            docker-compose down
+
+  deploy_to_heroku:
+    docker:
+      - image: cimg/ruby:3.0.2
+    steps:
+      - checkout
+      - heroku/install
+      - run:
+          name: Deploy to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_SHA1:refs/heads/main
+
+workflows:
+  version: 2.1
+  build_deploy:
+    jobs:
+      - build_and_test
+      - deploy_to_heroku:
+          requires:
+            - build_and_test
+          filters:
+            branches:
+              only: main
