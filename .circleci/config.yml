@@ -9,6 +9,13 @@ jobs:
       - image: cimg/ruby:3.0.2
     steps:
       - checkout
+      - run:
+          name: Create .env file
+          command: |
+            echo "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" >> .env
+            echo "MYSQL_DATABASE=$MYSQL_DATABASE" >> .env
+            echo "MYSQL_USER=$MYSQL_USER" >> .env
+            echo "MYSQL_PASSWORD=$MYSQL_PASSWORD" >> .env
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
