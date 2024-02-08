@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe "Userモデルのバリデーション" do
-
     it "userが問題なく作成される" do
       complete_user = build(:user)
       expect(complete_user).to be_valid

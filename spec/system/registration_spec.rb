@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Registration", type: :system do
-
   def extract_confirmation_url(email)
     body = email.body.encoded
     url_matches = body.match(/href="(?<url>.+?)"/)
@@ -14,7 +13,7 @@ RSpec.describe "Registration", type: :system do
         visit new_user_registration_path
         fill_in "アカウント名", with: "ユーザー"
         fill_in "メールアドレス", with: "abc@abc.com"
-        fill_in "パスワード", with: "password" 
+        fill_in "パスワード", with: "password"
         fill_in "パスワード確認", with: "password"
         choose "男性"
         click_on "新規登録する"
@@ -24,6 +23,8 @@ RSpec.describe "Registration", type: :system do
         visit url
 
         user = User.find_by(email: "abc@abc.com")
+        expect(user).not_to be_nil
+        expect(user.name).to eq "ユーザー"
         expect(current_path).to eq new_user_session_path
       end
     end
@@ -89,7 +90,7 @@ RSpec.describe "Registration", type: :system do
         click_on "変更を保存する"
 
         expect(page).to have_content "が入力されていません。"
-        expect(user.name).not_to eq "" 
+        expect(user.name).not_to eq ""
       end
     end
 

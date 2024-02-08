@@ -4,7 +4,7 @@ FactoryBot.define do
     sequence(:name) { |n| "user_#{n}" }
     password { 'password' }
     password_confirmation { 'password' }
-    sex {'男性'}
+    sex { '男性' }
     confirmed_at { Time.zone.now }
   end
 end
