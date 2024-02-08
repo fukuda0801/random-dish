@@ -16,6 +16,7 @@ jobs:
             echo "MYSQL_DATABASE=$MYSQL_DATABASE" >> .env
             echo "MYSQL_USER=$MYSQL_USER" >> .env
             echo "MYSQL_PASSWORD=$MYSQL_PASSWORD" >> .env
+            echo "MYSQL_TEST_DATABASE=$MYSQL_TEST_DATABASE" >> .env
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -32,9 +33,18 @@ jobs:
           command: |
             docker-compose ps
       - run:
+          name: Check user permissions inside the container
+          command: |
+            docker-compose exec web whoami
+            docker-compose exec web id
+      - run:
           name: Setup database
           command: |
-            docker-compose exec web bash -c "rake db:create db:migrate"
+            docker-compose exec web bash -c "rake db:create db:migrate --trace"
+      - run:
+          name: Get Docker containers logs
+          command: |
+            docker-compose logs
       - run:
           name: Run RuboCop
           command: |
