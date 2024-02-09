@@ -10,13 +10,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create .env file
+          name: Set up environment variables for CI
           command: |
-            echo "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" >> .env
-            echo "MYSQL_DATABASE=$MYSQL_DATABASE" >> .env
-            echo "MYSQL_USER=root" >> .env
-            echo "MYSQL_PASSWORD=$MYSQL_PASSWORD" >> .env
-            echo "MYSQL_TEST_DATABASE=$MYSQL_TEST_DATABASE" >> .env
+            echo 'export MYSQL_USER=root' >> $BASH_ENV
+            echo 'export MYSQL_PASSWORD=$MYSQL_ROOT_PASSWORD' >> $BASH_ENV
+            source $BASH_ENV
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -41,6 +39,9 @@ jobs:
           command: |
             docker-compose ps
       - run:
+          name: Output Docker containers logs after failure
+          command: docker-compose logs
+      - run:
           name: Setup database
           command: |
             docker-compose exec web bash -c "rake db:create --trace"
@@ -48,10 +49,6 @@ jobs:
           name: Migrate database
           command: |
             docker-compose exec web bash -c "rake db:migrate --trace"
-      - run:
-          name: Get Docker containers logs
-          command: |
-            docker-compose logs
       - run:
           name: Run RuboCop
           command: |
