@@ -29,13 +29,25 @@ jobs:
           command: |
             docker-compose -f docker-compose.yml up -d
       - run:
+          name: Wait for DB to be ready
+          command: |
+            for i in `seq 1 10`; do
+              docker-compose exec db mysqladmin ping -h db --silent && break
+              echo "Waiting for DB to be ready..."
+              sleep 5
+            done
+      - run:
           name: Check containers
           command: |
             docker-compose ps
       - run:
           name: Setup database
           command: |
-            docker-compose exec web bash -c "rake db:create db:migrate --trace"
+            docker-compose exec web bash -c "rake db:create --trace"
+      - run:
+          name: Migrate database
+          command: |
+            docker-compose exec web bash -c "rake db:migrate --trace"
       - run:
           name: Get Docker containers logs
           command: |
