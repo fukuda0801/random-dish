@@ -41,7 +41,7 @@ jobs:
             docker-compose ps
       - run:
           name: Output Docker containers logs after failure
-          command: docker-compose logs
+          command: docker-compose logs web
       - run:
           name: Setup database
           command: |
