@@ -33,11 +33,6 @@ jobs:
           command: |
             docker-compose ps
       - run:
-          name: Check user permissions inside the container
-          command: |
-            docker-compose exec web whoami
-            docker-compose exec web id
-      - run:
           name: Setup database
           command: |
             docker-compose exec web bash -c "rake db:create db:migrate --trace"
