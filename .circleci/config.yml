@@ -45,19 +45,19 @@ jobs:
       - run:
           name: Setup database
           command: |
-            docker-compose exec web bash -c "rake db:create --trace"
+            docker-compose exec -T web bash -c "rake db:create --trace"
       - run:
           name: Migrate database
           command: |
-            docker-compose exec web bash -c "rake db:migrate --trace"
+            docker-compose exec -T web bash -c "rake db:migrate --trace"
       - run:
           name: Run RuboCop
           command: |
-            docker-compose exec web bash -c "bundle exec rubocop"
+            docker-compose exec -T web bash -c "bundle exec rubocop"
       - run:
           name: Run RSpec tests
           command: |
-            docker-compose exec web bash -c "bundle exec rspec"
+            docker-compose exec -T web bash -c "bundle exec rspec"
       - run:
           name: Clean up
           command: |
