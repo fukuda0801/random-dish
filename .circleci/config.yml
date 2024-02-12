@@ -7,66 +7,47 @@ jobs:
   build_and_test:
     docker:
       - image: cimg/ruby:3.0.2
+      - image: mysql:8.0
+        environment:
+          MYSQL_USER: root
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: random_dish_test
+      - image: selenium/standalone-chrome:latest
+        environment:
+          SELENIUM_HOST: selenium
+          SELENIUM_PORT: 4444
     steps:
       - checkout
       - run:
-          name: Check current directory and list files
-          command: |
-            pwd
-            ls -la
-      - run:
-          name: Create .env file
-          command: |
-            echo "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" > .env
-            echo "MYSQL_DATABASE=$MYSQL_DATABASE" >> .env
-            echo "MYSQL_PASSWORD=$MYSQL_ROOT_PASSWORD" >> .env
-            echo "MYSQL_TEST_DATABASE=$MYSQL_TEST_DATABASE" >> .env
-      - setup_remote_docker:
-          version: 20.10.6
-      - run:
           name: Install dependencies
           command: |
-            sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
-            sudo apt-get update && sudo apt-get install -y nodejs yarn docker-compose
-      - run:
-          name: Setup Docker environment
-          command: |
-            docker-compose -f docker-compose.yml up -d
-      - run:
-          name: Wait for DB to be ready
-          command: |
-            for i in `seq 1 10`; do
-              docker-compose exec db mysqladmin ping -h db --silent && break
-              echo "Waiting for DB to be ready..."
-              sleep 5
-            done
-      - run:
-          name: Check containers
-          command: |
-            docker-compose ps
-      - run:
-          name: Output Docker containers logs after failure
-          command: docker-compose logs web
+            sudo apt-get update && sudo apt-get install -y nodejs libmysqlclient-dev
+            gem install bundler -v 2.2.16
+            bundle install --jobs=4 --retry=3
       - run:
           name: Setup database
           command: |
-            docker-compose exec -T web bash -c "rake db:create --trace"
+            bundle exec rake db:create RAILS_ENV=test
+            bundle exec rake db:schema:load RAILS_ENV=test
       - run:
           name: Migrate database
           command: |
-            docker-compose exec -T web bash -c "rake db:migrate --trace"
+            bundle exec rake db:migrate RAILS_ENV=test
       - run:
           name: Run RuboCop
-          command: |
-            docker-compose exec -T web bash -c "bundle exec rubocop"
+          command: bundle exec rubocop
       - run:
           name: Run RSpec tests
-          command: |
-            docker-compose exec -T web bash -c "bundle exec rspec"
+          command: bundle exec rspec
       - run:
-          name: Clean up
+          name: Setup Test Environment
           command: |
-            docker-compose down
+            # Set up anything else you need for your test environment
+      - run:
+          name: Run Tests with Selenium
+          command: |
+            # Execute tests that require Selenium here
 
   deploy_to_heroku:
     docker:
@@ -77,7 +58,8 @@ jobs:
       - run:
           name: Deploy to Heroku
           command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_SHA1:refs/heads/main
+            heroku git:remote -a $HEROKU_APP_NAME
+            git push heroku $CIRCLE_SHA1:refs/heads/main
 
 workflows:
   version: 2.1
