@@ -23,7 +23,6 @@ jobs:
             echo "MYSQL_TEST_DATABASE=$MYSQL_TEST_DATABASE" >> .env
       - setup_remote_docker:
           version: 20.10.6
-          docker_layer_caching: true
       - run:
           name: Install dependencies
           command: |
